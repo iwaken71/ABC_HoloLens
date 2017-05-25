@@ -10,55 +10,53 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 	GameObject namePlatePrefab;
 	Texture2D tex;
 
-	void Awake ()
-	{
-		
-	}
+
 	void Start(){
-		InputManager.Instance.PushFallbackInputHandler (gameObject);
+		//InputManager.Instance.PushFallbackInputHandler (gameObject);
 		namePlatePrefab = Resources.Load("NamePlate") as GameObject;
 		Debug.Log(namePlatePrefab);
 	}
 	public void OnInputClicked(InputClickedEventData eventData) {
         Process();
     }
-    DecodeData data;
+   // DecodeData data;
 
     void Process(){
 		 tex =  WebCameraController.Instance.TakePicuture();
+		 Debug.Log(tex.width+","+tex.height);
 		 HTTPManager.Instance.UploadTexture(tex);
 		//Debug.Log(data.class_names[0]);
     }
 
-    public void CastRay (DecodeData data)
+    public void CastRay (FaceData data)
 	{
-		if (data.class_names.Length == 0) {
+		if (data.isEmpty) {
 			return;
 		}
 
-		float x = (data.face_points [0] [0] + data.face_points [0] [2]) / 2.0f;
+		float x = (data.x + data.x2 ) / 2.0f;
 
-		float y = (data.face_points [0] [1] + data.face_points [0] [3]) / 2.0f;
+		float y = (data.y  + data.y2 ) / 2.0f;
 		y = tex.height - y;
 		Debug.Log("x:"+x+"y:"+y);
 
-		Ray ray = Camera.main.ScreenPointToRay (new Vector3 (x, y, 0));
+		Ray ray = Camera.main.ViewportPointToRay (new Vector3 (x/tex.width, y/tex.height, 0));
 		RaycastHit hit;
 
 		if (Physics.Raycast (ray, out hit, 50)) {
 			Debug.Log(hit.point);
 			GameObject obj =  Instantiate(namePlatePrefab,hit.point,Quaternion.identity);
-			obj.GetComponent<NamePlate>().SetName(data.class_names[0]);
+			obj.GetComponent<NamePlate>().SetName(data.name);
 		}
 
 
 	}
 
-    public void SetData (DecodeData data)
-	{
-		this.data = data;
-
-	}
+//    public void SetData (DecodeData data)
+//	{
+//		this.data = data;
+//
+//	}
 
     void Update ()
 	{

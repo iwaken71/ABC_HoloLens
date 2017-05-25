@@ -76,14 +76,33 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 		} else {
 			//通信結果 -> www.text
 			Debug.Log ("Post Success");
-			DecodeData decodeData = JsonToDecodeData(www.text);
+			FaceData decodeData = JsonToDecodeData(www.text);
 			GameManager.Instance.CastRay(decodeData);
 		}
 	}
-	public DecodeData JsonToDecodeData (string json)
+	public FaceData JsonToDecodeData (string text)
 	{	
-		DecodeData decodeData2 = LitJson.JsonMapper.ToObject<DecodeData>(json);
-		return decodeData2;
+		Debug.Log(text);
+		JSONObject json = new JSONObject (text);
+		Debug.Log(json);
+		List<JSONObject> className = json.GetField ("class_names").list;
+		Debug.Log(className);
+		if (className.Count == 0) {
+			return new FaceData ();
+		} else if (className [0].str == "") {
+			return new FaceData ();
+		} else {
+			string name = className[0].str;
+			Debug.Log(name);
+			JSONObject face_points = json.GetField ("face_points")[0];
+			Debug.Log(face_points);
+			int x = (int)(face_points[0].n);
+			int y = (int)(face_points[1].n);
+			int x2 = (int)(face_points[2].n);
+			int y2 = (int)(face_points[3].n);
+			return new FaceData (name,x,y,x2,y2);
+
+		}
 	}
 
 

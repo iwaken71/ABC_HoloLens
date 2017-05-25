@@ -74,13 +74,13 @@ public class HTTPTest3 : MonoBehaviour {
 			Debug.Log (www.error);
 		} else {
 			//通信結果 -> www.text
-			Debug.Log ("Post Success");
-			Debug.Log (www.text);
-			LitJson.JsonData jsonData =  LitJson.JsonMapper.ToObject(www.text);
-			string message = (string)jsonData["class_names"][0];
-   			Debug.Log(message);
-			DecodeData decodeData = LitJson.JsonMapper.ToObject<DecodeData>(www.text);
-			Debug.Log(decodeData.face_points[0]);
+//			Debug.Log ("Post Success");
+//			Debug.Log (www.text);
+//			LitJson.JsonData jsonData =  LitJson.JsonMapper.ToObject(www.text);
+//			string message = (string)jsonData["class_names"][0];
+//   			Debug.Log(message);
+//			DecodeData decodeData = LitJson.JsonMapper.ToObject<DecodeData>(www.text);
+//			Debug.Log(decodeData.face_points[0]);
 		}
 	}
 }

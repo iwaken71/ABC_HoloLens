@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using LitJson;
+//using LitJson;
 
 public class HTTPTest : MonoBehaviour
 {
