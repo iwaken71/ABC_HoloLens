@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
-
+	/*
 	private void Awake ()
 	{
 		if (this != Instance) {
@@ -11,29 +12,25 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 			return;
 		}
 		DontDestroyOnLoad (this.gameObject);
-	}
+	}*/
 	public bool inLab;
-	string url = "http://192.168.0.28:5001";
+	public string url = "http://192.168.0.28:5001";
 	string jsonData;
-	DecodeData _decodeData;
+	//DecodeData _decodeData;
 
 	// Use this for initialization
 	void Start ()
 	{
-		if (inLab) {
-			url = "http://192.168.0.28:5001";
-		} else {
-			url = "http://131.112.51.42:5001";
-		}
+		SetURL ();
 	}
-
+	/*
 	public DecodeData UploadPicture (Texture2D tex)
 	{
 		//StartCoroutine(Upload(tex));
 		//Debug.Log(_decodeData.class_names[0]);
 		return _decodeData;
 
-	}
+	}*/
 
 	public void UploadTexture (Texture2D tex)
 	{
@@ -56,13 +53,41 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 //		});
 	}
 
+	IEnumerator Post (Texture2D tex)
+	{
+		UnityWebRequest request = new UnityWebRequest(url,"POST");
+		byte[] bytes = tex.EncodeToPNG();
+		//request.uploadedBytes = new UploadHandlerRaw(bytes
+		request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bytes);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+
+		yield return request.Send();
+ 
+		if (request.isError)
+        {
+			//エラー内容 -> www.error
+			DebugTest.Instance.Log ("Post Failure");          
+			Debug.Log (request.error);
+			ChangeURL ();
+        }
+        else
+        {
+			//通信結果 -> www.text
+			DebugTest.Instance.Log ("Post Success");
+			FaceData decodeData = JsonToDecodeData(request.downloadHandler.text);
+			GameManager.Instance.CastRay(decodeData);
+        }
+	}
+
 	IEnumerator Upload (Texture2D tex)
 	{
+	//	UnityWebRequest request = new UnityWebRequest(url,"POST");
 		WWWForm form = new WWWForm();
-        form.AddField("myField", "myData");
+       	form.AddField("myField", "myData");
 
 		byte[] bytes = tex.EncodeToPNG();
 		//Object.Destroy(tex);
+
 		form.AddBinaryData ("file", bytes);
 		// 送信開始
 
@@ -70,30 +95,27 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 		yield return www;
 		//通信結果をLogで出す
 		if (www.error != null) {
-			//エラー内容 -> www.error
-			Debug.Log ("Post Failure");          
-			Debug.Log (www.error);
+			
 		} else {
 			//通信結果 -> www.text
-			Debug.Log ("Post Success");
+			DebugTest.Instance.Log ("Post Success");
 			FaceData decodeData = JsonToDecodeData(www.text);
 			GameManager.Instance.CastRay(decodeData);
 		}
 	}
 	public FaceData JsonToDecodeData (string text)
 	{	
-		Debug.Log(text);
+		
 		JSONObject json = new JSONObject (text);
-		Debug.Log(json);
+
 		List<JSONObject> className = json.GetField ("class_names").list;
-		Debug.Log(className);
 		if (className.Count == 0) {
 			return new FaceData ();
 		} else if (className [0].str == "") {
 			return new FaceData ();
 		} else {
 			string name = className[0].str;
-			Debug.Log(name);
+			DebugTest.Instance.Log(name);
 			JSONObject face_points = json.GetField ("face_points")[0];
 			Debug.Log(face_points);
 			int x = (int)(face_points[0].n);
@@ -103,6 +125,19 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 			return new FaceData (name,x,y,x2,y2);
 
 		}
+	}
+
+	void SetURL(){
+		if (inLab) {
+			url = "http://192.168.0.28:5001";
+		} else {
+			url = "http://131.112.51.42:5001";
+		}
+	}
+
+	void ChangeURL(){
+		inLab = !inLab;
+		SetURL ();
 	}
 
 

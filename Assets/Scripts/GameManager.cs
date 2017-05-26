@@ -14,7 +14,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 	void Start(){
 		//InputManager.Instance.PushFallbackInputHandler (gameObject);
 		namePlatePrefab = Resources.Load("NamePlate") as GameObject;
-		Debug.Log(namePlatePrefab);
+		InvokeRepeating ("Process", 3, 3);
 	}
 	public void OnInputClicked(InputClickedEventData eventData) {
         Process();
@@ -23,7 +23,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 
     void Process(){
 		 tex =  WebCameraController.Instance.TakePicuture();
-		 Debug.Log(tex.width+","+tex.height);
+		// Debug.Log(tex.width+","+tex.height);
 		 HTTPManager.Instance.UploadTexture(tex);
 		//Debug.Log(data.class_names[0]);
     }
