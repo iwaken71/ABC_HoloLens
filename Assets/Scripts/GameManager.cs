@@ -13,8 +13,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 
 	void Start(){
 		//InputManager.Instance.PushFallbackInputHandler (gameObject);
-		namePlatePrefab = Resources.Load("NamePlate") as GameObject;
-		InvokeRepeating ("Process", 3, 3);
+		namePlatePrefab = Resources.Load("NamePlate2") as GameObject;
+		InvokeRepeating ("Process", 3, 0.1f);
 	}
 	public void OnInputClicked(InputClickedEventData eventData) {
         Process();

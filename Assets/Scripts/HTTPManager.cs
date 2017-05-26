@@ -74,6 +74,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
         {
 			//通信結果 -> www.text
 			DebugTest.Instance.Log ("Post Success");
+			Debug.Log ("Post Success");
 			FaceData decodeData = JsonToDecodeData(request.downloadHandler.text);
 			GameManager.Instance.CastRay(decodeData);
         }
@@ -115,6 +116,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 			return new FaceData ();
 		} else {
 			string name = className[0].str;
+			Debug.Log(name);
 			DebugTest.Instance.Log(name);
 			JSONObject face_points = json.GetField ("face_points")[0];
 			Debug.Log(face_points);
