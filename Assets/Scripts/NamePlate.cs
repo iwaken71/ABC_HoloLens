@@ -9,7 +9,7 @@ public class NamePlate : MonoBehaviour {
 	[SerializeField]
 	Text nameLabel;
 
-	string name;
+//d	string name;
 
 	void Awake(){
 		//this.name = new StringReactiveProperty("");
@@ -23,7 +23,7 @@ public class NamePlate : MonoBehaviour {
 	}
 
 	public void SetName(string input){
-		this.name = input;
+		//this.name = input;
 		nameLabel.text = input;
 	}
 }
