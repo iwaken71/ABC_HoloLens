@@ -16,14 +16,16 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 		plateDic = new Dictionary<string,NamePlate>();
 		OneNamePlateObject = null;
 	}
-	public void AddNamePlate (string input,Vector3 faceTopPos)
+	public void AddNamePlate (FaceData data,Vector3 faceTopPos)
 	{
 		Vector3 upperHeadPos = FaceSize.UpperHeadPos(faceTopPos);
 		if (OneNamePlateObject != null) {
 			
-			UpdatePlateData(input,upperHeadPos);
+			UpdatePlateData(data.name,upperHeadPos);
+			SetNumber(data.Power);
 		}else{
-			GenerateNewPlate(input,upperHeadPos);
+			GenerateNewPlate(data.name,upperHeadPos);
+			SetNumber(data.Power);
 		}
 
 
@@ -48,5 +50,11 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 
 	}
 
+	void SetNumber (float power)
+	{
+		if (OneNamePlateObject != null) {
+			OneNamePlateObject.GetComponent<NamePlate>().SetNumber(power);
+		}
+	}
 
 }

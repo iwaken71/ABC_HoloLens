@@ -10,7 +10,7 @@ public class FaceSize {
 
 	public static Vector3 UpperHeadPos (Vector3 faceTopPos)
 	{
-		return faceTopPos + Vector3.up * Height;
+		return faceTopPos + Vector3.up * Height + (faceTopPos-Camera.main.transform.position).normalized*Depth/2.0f;
 		
 	}
 }

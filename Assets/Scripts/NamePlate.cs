@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class NamePlate : MonoBehaviour {
 
 	[SerializeField]
-	Text nameLabel;
+	Text nameLabel,numberLabel;
 
 	public float smooth = 5;
 
@@ -52,5 +52,9 @@ public class NamePlate : MonoBehaviour {
 
 	public void SetDistination(Vector3 input){
 		distination = input;
+	}
+
+	public void SetNumber(float number){
+		numberLabel.text = number.ToString ("f0");
 	}
 }

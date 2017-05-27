@@ -13,7 +13,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 	void Start(){
 		//InputManager.Instance.PushFallbackInputHandler (gameObject);
 
-		InvokeRepeating ("Process", 3, 0.5f);
+		InvokeRepeating ("Process", 3, 1f);
 	}
 	public void OnInputClicked(InputClickedEventData eventData) {
         Process();
@@ -43,8 +43,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 		RaycastHit hit;
 
 		if (Physics.Raycast (ray, out hit, 50)) {
-			Debug.Log(hit.point);
-			NamePlateManager.Instance.AddNamePlate(data.name,hit.point);
+			NamePlateManager.Instance.AddNamePlate(data,hit.point);
 		}
 
 

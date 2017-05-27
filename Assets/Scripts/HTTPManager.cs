@@ -103,6 +103,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 			Debug.Log ("Post Success");
 			DebugTest.Instance.Log ("Post Success");
 			FaceData decodeData = JsonToDecodeData(www.text);
+			decodeData.SetPower(CalPower(tex));
 			GameManager.Instance.CastRay(decodeData);
 		}
 	}
@@ -142,6 +143,27 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 	void ChangeURL(){
 		inLab = !inLab;
 		SetURL ();
+	}
+
+
+	public float CalPower(Texture2D tex)
+	{
+		Color32[] color32 = tex.GetPixels32 ();
+		float point = 0;
+
+		for (int i = 0; i < color32.Length; i++) {
+			int b = 255-color32[i].b;
+			int g = 255-color32[i].g;
+			int r =  255-color32[i].r;
+			if(b < 125) b=0;
+			if(g < 125)g=0;
+			if(r < 125)r = 0;
+
+			point += b*g*r/8.0f;
+		}
+		point = point/color32.Length;
+		Debug.Log(point);
+		return point;
 	}
 
 
