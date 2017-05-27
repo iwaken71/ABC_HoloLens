@@ -7,13 +7,12 @@ using UnityEngine.EventSystems;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandler{
 
-	GameObject namePlatePrefab;
 	Texture2D tex;
 
 
 	void Start(){
 		//InputManager.Instance.PushFallbackInputHandler (gameObject);
-		namePlatePrefab = Resources.Load("NamePlate2") as GameObject;
+
 		InvokeRepeating ("Process", 3, 0.1f);
 	}
 	public void OnInputClicked(InputClickedEventData eventData) {
@@ -45,8 +44,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 
 		if (Physics.Raycast (ray, out hit, 50)) {
 			Debug.Log(hit.point);
-			GameObject obj =  Instantiate(namePlatePrefab,hit.point,Quaternion.identity);
-			obj.GetComponent<NamePlate>().SetName(data.name);
+			NamePlateManager.Instance.AddNamePlate(data.name,hit.point);
 		}
 
 

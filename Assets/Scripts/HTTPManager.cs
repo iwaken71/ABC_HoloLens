@@ -96,9 +96,11 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 		yield return www;
 		//通信結果をLogで出す
 		if (www.error != null) {
-			
+			ChangeURL ();
+			Debug.Log (www.error);
 		} else {
 			//通信結果 -> www.text
+			Debug.Log ("Post Success");
 			DebugTest.Instance.Log ("Post Success");
 			FaceData decodeData = JsonToDecodeData(www.text);
 			GameManager.Instance.CastRay(decodeData);
