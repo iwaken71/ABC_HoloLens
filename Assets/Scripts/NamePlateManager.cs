@@ -23,52 +23,56 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 		if (OnPlate) {
 			if (OneNamePlateObject != null) {
 			
-				UpdatePlateData (data.name, upperHeadPos);
+				UpdatePlateData (data, upperHeadPos);
 				//SetNumber (data.Power);
 			} else {
-				GenerateNewPlate (data.name, upperHeadPos);
+				GenerateNewPlate (data, upperHeadPos);
 				//SetNumber (data.Power);
 			}
 		} else {
 			if (plateDic.ContainsKey (data.name)) {
-				UpdatePlateData (data.name, upperHeadPos);
+				UpdatePlateData (data, upperHeadPos);
 			} else {
-				GenerateNewPlate (data.name, upperHeadPos);
+				GenerateNewPlate (data, upperHeadPos);
 			}
 		}
 	}
 
-	void GenerateNewPlate (string name, Vector3 pos)
+	void GenerateNewPlate (FaceData data, Vector3 pos)
 	{
 		if (OnPlate) {
 			OneNamePlateObject = Instantiate (namePlatePrefab, pos, Quaternion.identity) as GameObject;
 			NamePlate script = OneNamePlateObject.GetComponent<NamePlate> ();
-			script.SetName (name);
+			script.SetName (data.name);
 			script.SetDistination (pos);
 		} else {
 			GameObject obj = Instantiate (namePlatePrefab, pos, Quaternion.identity) as GameObject;
 			NamePlate script = obj.GetComponent<NamePlate> ();
-			script.SetName (name);
+			script.SetName (data.name);
 			script.SetDistination (pos);
-			script.SetNumber(RandomNumber(530000));
-			plateDic.Add(name,script);
+			script.SetNumber(data.Probability);
+			//script.SetNumber(RandomNumber(530000));
+			plateDic.Add(data.name,script);
+
 
 		}
 		//plateDic.Add(name,script);
 
 	}
 
-	void UpdatePlateData (string name, Vector3 pos)
+	void UpdatePlateData (FaceData data, Vector3 pos)
 	{
 		if (OnPlate) {
 			if (OneNamePlateObject == null)
 				return;
 
 			NamePlate script = OneNamePlateObject.GetComponent<NamePlate> ();
-			script.SetName (name);
+			script.SetName (data.name);
 			script.SetDistination (pos);
 		} else {
-			plateDic[name].SetDistination(pos);
+			NamePlate script =  plateDic[data.name];
+			script.SetDistination(pos);
+			script.SetNumber(data.Probability);
 		}
 
 	}

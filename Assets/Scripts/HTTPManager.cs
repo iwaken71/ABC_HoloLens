@@ -112,6 +112,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 	{
 		JSONObject json = new JSONObject (text);
 		List<JSONObject> className = json.GetField ("class_names").list;
+		List<JSONObject>  probabilityList = json.GetField ("probability").list;
 		if (className.Count == 0) {
 			//return new FaceData ();
 		} else if (className [0].str == "") {
@@ -119,6 +120,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 		} else {
 			for (int i = 0; i < className.Count; i++) {
 				string name = className[i].str;
+				float probability = probabilityList[i].f;
 				Debug.Log(name);
 				//DebugTest.Instance.Log(name);
 				JSONObject face_points = json.GetField ("face_points")[i];
@@ -127,7 +129,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 				int y = (int)(face_points[1].n);
 				int x2 = (int)(face_points[2].n);
 				int y2 = (int)(face_points[3].n);
-				GameManager.Instance.CastRay(new FaceData (name,x,y,x2,y2));
+				GameManager.Instance.CastRay(new FaceData (name,x,y,x2,y2,probability));
 			}
 		}
 	}
@@ -137,6 +139,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 		JSONObject json = new JSONObject (text);
 
 		List<JSONObject> className = json.GetField ("class_names").list;
+		List<JSONObject>  probabilityList = json.GetField ("probability").list;
 		if (className.Count == 0) {
 			return new FaceData ();
 		} else if (className [0].str == "") {
@@ -147,11 +150,12 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 			DebugTest.Instance.Log(name);
 			JSONObject face_points = json.GetField ("face_points")[0];
 			Debug.Log(face_points);
+			float probability = probabilityList[0].f;
 			int x = (int)(face_points[0].n);
 			int y = (int)(face_points[1].n);
 			int x2 = (int)(face_points[2].n);
 			int y2 = (int)(face_points[3].n);
-			return new FaceData (name,x,y,x2,y2);
+			return new FaceData (name,x,y,x2,y2,probability);
 
 		}
 	}

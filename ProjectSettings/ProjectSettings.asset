@@ -505,7 +505,7 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: ShudoProject3
-  metroPackageVersion: 1.0.0.3
+  metroPackageVersion: 1.0.0.4
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany

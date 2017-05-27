@@ -14,6 +14,8 @@ public class NamePlate : MonoBehaviour {
 	Vector3 distination;
 	Transform cameraTransform;
 
+	[SerializeField] 
+
 	public bool IsSmooth = true;
 
 //d	string name;
@@ -28,7 +30,7 @@ public class NamePlate : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		
-		Time.fixedDeltaTime = 0.1f;
+		Time.fixedDeltaTime = 0.05f;
 	}
 
 
@@ -55,6 +57,6 @@ public class NamePlate : MonoBehaviour {
 	}
 
 	public void SetNumber(float number){
-		numberLabel.text = number.ToString ("f0");
+		numberLabel.text = (number).ToString ("f1")+"%";
 	}
 }
