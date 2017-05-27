@@ -28,7 +28,10 @@ public class FaceData{
 		isEmpty = true;
 	}
 
-	public void SetPower(float input){
+	public void SetPower (float input)
+	{
 		Power = input;
 	}
+
+
 }

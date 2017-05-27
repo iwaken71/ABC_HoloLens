@@ -8,6 +8,7 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 	GameObject namePlatePrefab;
 
 	GameObject OneNamePlateObject;
+	bool OnPlate = false;
 
 
 	void Awake ()
@@ -16,45 +17,77 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 		plateDic = new Dictionary<string,NamePlate>();
 		OneNamePlateObject = null;
 	}
-	public void AddNamePlate (FaceData data,Vector3 faceTopPos)
+	public void AddNamePlate (FaceData data, Vector3 faceTopPos)
 	{
-		Vector3 upperHeadPos = FaceSize.UpperHeadPos(faceTopPos);
-		if (OneNamePlateObject != null) {
+		Vector3 upperHeadPos = FaceSize.UpperHeadPos (faceTopPos);
+		if (OnPlate) {
+			if (OneNamePlateObject != null) {
 			
-			UpdatePlateData(data.name,upperHeadPos);
-			SetNumber(data.Power);
-		}else{
-			GenerateNewPlate(data.name,upperHeadPos);
-			SetNumber(data.Power);
+				UpdatePlateData (data.name, upperHeadPos);
+				//SetNumber (data.Power);
+			} else {
+				GenerateNewPlate (data.name, upperHeadPos);
+				//SetNumber (data.Power);
+			}
+		} else {
+			if (plateDic.ContainsKey (data.name)) {
+				UpdatePlateData (data.name, upperHeadPos);
+			} else {
+				GenerateNewPlate (data.name, upperHeadPos);
+			}
 		}
-
-
 	}
 
 	void GenerateNewPlate (string name, Vector3 pos)
 	{
-		OneNamePlateObject = Instantiate(namePlatePrefab,pos,Quaternion.identity) as GameObject;
-		NamePlate script =  OneNamePlateObject.GetComponent<NamePlate>();
-		script.SetName(name);
-		script.SetDistination(pos);
+		if (OnPlate) {
+			OneNamePlateObject = Instantiate (namePlatePrefab, pos, Quaternion.identity) as GameObject;
+			NamePlate script = OneNamePlateObject.GetComponent<NamePlate> ();
+			script.SetName (name);
+			script.SetDistination (pos);
+		} else {
+			GameObject obj = Instantiate (namePlatePrefab, pos, Quaternion.identity) as GameObject;
+			NamePlate script = obj.GetComponent<NamePlate> ();
+			script.SetName (name);
+			script.SetDistination (pos);
+			script.SetNumber(RandomNumber(530000));
+			plateDic.Add(name,script);
+
+		}
 		//plateDic.Add(name,script);
 
 	}
 
-	void UpdatePlateData(string name,Vector3 pos){
-		if(OneNamePlateObject == null)return;
+	void UpdatePlateData (string name, Vector3 pos)
+	{
+		if (OnPlate) {
+			if (OneNamePlateObject == null)
+				return;
 
-		NamePlate script =  OneNamePlateObject.GetComponent<NamePlate>();
-		script.SetName(name);
-		script.SetDistination(pos);
+			NamePlate script = OneNamePlateObject.GetComponent<NamePlate> ();
+			script.SetName (name);
+			script.SetDistination (pos);
+		} else {
+			plateDic[name].SetDistination(pos);
+		}
 
 	}
 
-	void SetNumber (float power)
+	void SetNumber (string name,float power)
 	{
 		if (OneNamePlateObject != null) {
 			OneNamePlateObject.GetComponent<NamePlate>().SetNumber(power);
 		}
+	}
+
+	float RandomNumber (int max)
+	{	
+		float sum = 0;
+		float N = 5;
+		for (int i = 0; i < N; i++) {
+			sum += Random.Range(0,max+1);
+		}
+		return sum/N;
 	}
 
 }
