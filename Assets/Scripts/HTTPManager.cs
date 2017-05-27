@@ -159,7 +159,7 @@ public class HTTPManager : SingletonMonoBehaviour<HTTPManager> {
 			if(g < 125)g=0;
 			if(r < 125)r = 0;
 
-			point += b*g*r/8.0f;
+			point += b*g*r/25.0f;
 		}
 		point = point/color32.Length;
 		Debug.Log(point);
