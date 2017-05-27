@@ -13,12 +13,13 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 		namePlatePrefab = Resources.Load("NamePlate2") as GameObject;
 		plateDic = new Dictionary<string,NamePlate>();
 	}
-	public void AddNamePlate (string input,Vector3 pos)
+	public void AddNamePlate (string input,Vector3 faceTopPos)
 	{
+		Vector3 upperHeadPos = FaceSize.UpperHeadPos(faceTopPos);
 		if (plateDic.ContainsKey (input)) {
-			plateDic[input].SetDistination(pos);
+			plateDic[input].SetDistination( upperHeadPos);
 		}else{
-			GenerateNewPlate(input,pos);
+			GenerateNewPlate(input,upperHeadPos);
 		}
 
 
