@@ -14,6 +14,8 @@ public class NamePlate : MonoBehaviour {
 	Vector3 distination;
 	Transform cameraTransform;
 
+	public bool IsSmooth = true;
+
 //d	string name;
 
 	void Awake(){
@@ -31,9 +33,15 @@ public class NamePlate : MonoBehaviour {
 
 
 
-	void FixedUpdate(){
-		transform.forward = transform.position - cameraTransform.position;
-		transform.position = distination;
+	void FixedUpdate ()
+	{
+		if (IsSmooth) {
+			transform.forward = Vector3.Slerp(transform.forward, transform.position - cameraTransform.position ,Time.fixedDeltaTime*smooth);
+			transform.position = Vector3.Slerp( transform.position, distination,Time.fixedDeltaTime*smooth) ;
+		} else {
+			transform.forward = transform.position - cameraTransform.position;
+			transform.position = distination;
+		}
 	}
 
 	public void SetName(string input){

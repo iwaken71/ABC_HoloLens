@@ -7,17 +7,21 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 	Dictionary<string,NamePlate> plateDic;
 	GameObject namePlatePrefab;
 
+	GameObject OneNamePlateObject;
+
 
 	void Awake ()
 	{	
 		namePlatePrefab = Resources.Load("NamePlate2") as GameObject;
 		plateDic = new Dictionary<string,NamePlate>();
+		OneNamePlateObject = null;
 	}
 	public void AddNamePlate (string input,Vector3 faceTopPos)
 	{
 		Vector3 upperHeadPos = FaceSize.UpperHeadPos(faceTopPos);
-		if (plateDic.ContainsKey (input)) {
-			plateDic[input].SetDistination( upperHeadPos);
+		if (OneNamePlateObject != null) {
+			
+			UpdatePlateData(input,upperHeadPos);
 		}else{
 			GenerateNewPlate(input,upperHeadPos);
 		}
@@ -27,11 +31,20 @@ public class NamePlateManager : SingletonMonoBehaviour<NamePlateManager> {
 
 	void GenerateNewPlate (string name, Vector3 pos)
 	{
-		GameObject obj =  Instantiate(namePlatePrefab,pos,Quaternion.identity);
-		NamePlate script =  obj.GetComponent<NamePlate>();
+		OneNamePlateObject = Instantiate(namePlatePrefab,pos,Quaternion.identity) as GameObject;
+		NamePlate script =  OneNamePlateObject.GetComponent<NamePlate>();
 		script.SetName(name);
 		script.SetDistination(pos);
-		plateDic.Add(name,script);
+		//plateDic.Add(name,script);
+
+	}
+
+	void UpdatePlateData(string name,Vector3 pos){
+		if(OneNamePlateObject == null)return;
+
+		NamePlate script =  OneNamePlateObject.GetComponent<NamePlate>();
+		script.SetName(name);
+		script.SetDistination(pos);
 
 	}
 
