@@ -12,6 +12,7 @@ public class NamePlate : MonoBehaviour {
 	public float smooth = 5;
 
 	Vector3 distination;
+	Transform cameraTransform;
 
 //d	string name;
 
@@ -19,17 +20,20 @@ public class NamePlate : MonoBehaviour {
 		//this.name = new StringReactiveProperty("");
 	//	Debug.Log(this.name);
 		distination = Vector3.zero;
+		cameraTransform = Camera.main.transform;
 	}
 
 	// Use this for initialization
 	void Start () {
 		
-		
+		Time.fixedDeltaTime = 0.1f;
 	}
 
-	void Update(){
-		transform.forward = Vector3.Slerp(transform.forward, (transform.position - Camera.main.transform.position),Time.deltaTime*smooth);
-		transform.position = Vector3.Lerp(transform.position,distination,Time.deltaTime*smooth);
+
+
+	void FixedUpdate(){
+		transform.forward = transform.position - cameraTransform.position;
+		transform.position = distination;
 	}
 
 	public void SetName(string input){

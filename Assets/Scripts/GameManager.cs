@@ -13,7 +13,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>,IInputClickHandle
 	void Start(){
 		//InputManager.Instance.PushFallbackInputHandler (gameObject);
 
-		InvokeRepeating ("Process", 3, 0.1f);
+		InvokeRepeating ("Process", 3, 1f);
 	}
 	public void OnInputClicked(InputClickedEventData eventData) {
         Process();
