@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.49411765}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -253,6 +253,8 @@ MonoBehaviour:
   nameLabel: {fileID: 114378285291121638}
   numberLabel: {fileID: 114325703683659946}
   smooth: 5
+  plane: {fileID: 114274231630846312}
+  image: {fileID: 114534262697098584}
   IsSmooth: 1
 --- !u!114 &114953904573755462
 MonoBehaviour:
